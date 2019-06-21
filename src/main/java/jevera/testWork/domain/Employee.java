@@ -79,6 +79,35 @@ public class Employee {
         this.startYearOfProfExp = startYearOfProfExp;
     }
 
+    public Employee fullName(String fullName) {
+        this.fullName = fullName;
+        return this;
+    }
+    public Employee dateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+        return this;
+    }
+    public Employee sex(String sex) {
+        this.sex = sex;
+        return this;
+    }
+    public Employee nationality(String nationality) {
+        this.nationality = nationality;
+        return this;
+    }
+    public Employee workLocation(String workLocation) {
+        this.workLocation = workLocation;
+        return this;
+    }
+    public Employee currentPosition(String currentPosition) {
+        this.currentPosition = currentPosition;
+        return this;
+    }
+    public Employee startYearOfProfExp(String startYearOfProfExp) {
+        this.startYearOfProfExp = startYearOfProfExp;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

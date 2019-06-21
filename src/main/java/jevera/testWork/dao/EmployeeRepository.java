@@ -1,9 +1,11 @@
 package jevera.testWork.dao;
 
 import jevera.testWork.domain.Employee;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface EmployeeRepository {
+@Repository
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-    Employee findByFullName(String full)
-
+    Employee findByFullName(String fullName);
 }

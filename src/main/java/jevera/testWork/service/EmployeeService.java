@@ -12,15 +12,15 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public Employee registerEmployee(EmployeeDto employeeDto) {
-        if (isEmployeeAlreadyExist(employeeDto.getFullName())) {
-            throw new EmployeeAlreadyExsist(employeeDto.getFullName());
-        }
+//    public Employee registerEmployee(EmployeeDto employeeDto) {
+//        if (isEmployeeAlreadyExist(employeeDto.getFullName())) {
+//            throw new EmployeeAlreadyExsist(employeeDto.getFullName());
+//        }
+//
+//
+//    }
 
-
-    }
-
-    private boolean isEmployeeAlreadyExist(String fullName) {
-        return employeeRepository.findByFullName()
-    }
+//    private boolean isEmployeeAlreadyExist(String fullName) {
+//        return employeeRepository.findByFullName();
+//    }
 }
