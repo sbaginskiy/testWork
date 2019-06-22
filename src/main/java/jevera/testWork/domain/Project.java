@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 
 @Entity
 public class Project {
@@ -14,4 +15,8 @@ public class Project {
     private String name;
     @ManyToOne
     private Employee productOwner;
+    private Date plannedWorkStart;
+    private Date plannedWorkFinish;
+    private Date actualWorkStart;
+    private Date actualWorkFinish;
 }

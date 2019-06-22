@@ -1,4 +1,4 @@
-package jevera.testWork.dao;
+package jevera.testWork.repository;
 
 public interface ProjectRepository {
 }

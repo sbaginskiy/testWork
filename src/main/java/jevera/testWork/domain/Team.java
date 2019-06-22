@@ -1,5 +1,7 @@
 package jevera.testWork.domain;
 
+import org.hibernate.cfg.AvailableSettings;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
