@@ -15,6 +15,8 @@ public class Project {
     private String name;
     @ManyToOne
     private Employee productOwner;
+    @ManyToOne
+    private Team team;
     private Date plannedWorkStart;
     private Date plannedWorkFinish;
     private Date actualWorkStart;

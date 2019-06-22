@@ -19,14 +19,14 @@ public class EmployeeController {
     @Autowired
     private HttpSession session;
 
-    @PostMapping(value = "/login")
-    public Employee login(String name, String test) {
-        Employee employee = employeeService.register(new Employee().fullName(name));
-        session.setAttribute("user", employee);
-        return employee;
-    }
-    @GetMapping(value = "/findAll")
-    public List<Employee> findAll() {
-        return employeeService.findAll();
-    }
+//    @PostMapping(value = "/login")
+//    public Employee login(String name, String test) {
+////        Employee employee = employeeService.register(new Employee().fullName(name));
+////        session.setAttribute("user", employee);
+////        return employee;
+//    }
+//    @GetMapping(value = "/findAll")
+//    public List<Employee> findAll() {
+//        return employeeService.findAll();
+//    }
 }
