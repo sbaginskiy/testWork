@@ -1,5 +1,7 @@
 package jevera.testWork.domain;
 
+import lombok.Data;
+
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
+@Data
 public class EmployeeTeamRelation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +22,5 @@ public class EmployeeTeamRelation {
 
     private Date since;
     private Date till;
-
+    private float loadFactor;
 }

@@ -12,7 +12,6 @@ public class Employee {
     private Long id;
     @Column(unique = true)
     private String fullName;
-    @JsonIgnore
     private String passwordHash;
     private Date dateOfBirth;
     private String sex;

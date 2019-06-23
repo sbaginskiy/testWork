@@ -38,4 +38,11 @@ dependencies {
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 
 	compile group: 'org.springframework.data', name: 'spring-data-releasetrain', version: 'Dijkstra-RELEASE', ext: 'pom'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+
+	compileOnly 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+	
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '1.1.3'
+
 }
