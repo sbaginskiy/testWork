@@ -1,11 +1,17 @@
 package jevera.testWork.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
+@Setter
+@Getter
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,77 +26,8 @@ public class Employee {
     private String currentPosition;
     private String startYearOfProfExp;
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getWorkLocation() {
-        return workLocation;
-    }
-
-    public void setWorkLocation(String workLocation) {
-        this.workLocation = workLocation;
-    }
-
-    public String getCurrentPosition() {
-        return currentPosition;
-    }
-
-    public void setCurrentPosition(String currentPosition) {
-        this.currentPosition = currentPosition;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public String getStartYearOfProfExp() {
-        return startYearOfProfExp;
-    }
-
-    public void setStartYearOfProfExp(String startYearOfProfExp) {
-        this.startYearOfProfExp = startYearOfProfExp;
-    }
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private Set<EmployeeTeamRelation> employeeTeamRelations;
 
     public Employee fullName(String fullName) {
         this.fullName = fullName;

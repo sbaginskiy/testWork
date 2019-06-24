@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter @Setter
 @EqualsAndHashCode
@@ -15,4 +16,7 @@ public class Team {
     private Long id;
     @Column(unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<EmployeeTeamRelation> employeeTeamRelation;
 }
