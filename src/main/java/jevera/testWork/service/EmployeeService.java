@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -28,8 +29,7 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee
-    register(EmployeeDto employeeDto) {
+    public Employee register(EmployeeDto employeeDto) {
         if(isEmployeeExist(employeeDto.getFullName())) {
             throw new EmployeeAlreadyExist(employeeDto.getFullName());
         }
@@ -58,8 +58,7 @@ public class EmployeeService {
        return employeeRepository.findByFullName(fullName).orElseThrow(EntityNotFound::new);
     }
 
-    public Employee updateEmployee(EmployeeDto employeeDto) {
-        Employee employee = findByFullName(employeeDto.getFullName());
+    public Employee updateEmployee(Employee employee, EmployeeDto employeeDto) {
         modelMapper.map(employeeDto, employee);
         if (StringUtils.isNotBlank(employeeDto.getPassword())) {
             employee.setPasswordHash(encryptPassword(employeeDto.getPassword()));
@@ -67,15 +66,22 @@ public class EmployeeService {
         return save(employee);
     }
 
+    public void delete (Employee employee) {
+        employeeRepository.delete(employee);
+    }
     private boolean isEmployeeExist(String employee) {
         return false;
     }
 
     @SneakyThrows
     private static String encryptPassword(String password) {
-        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-        crypt.reset();
-        crypt.update(password.getBytes(UTF_8));
-        return new BigInteger(1, crypt.digest()).toString(16);
+try {
+    MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+    crypt.reset();
+    crypt.update(password.getBytes(UTF_8));
+    return new BigInteger(1, crypt.digest()).toString(16);
+} catch (NoSuchAlgorithmException exception){
+     }
+        return null;
     }
 }
