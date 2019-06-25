@@ -40,16 +40,16 @@ public class EmployeeController {
         return employeeService.findByFullName(fullName);
     }
 
-    @PostMapping(value = "/update")
-    public Employee update(@RequestBody EmployeeDto employeeDto) {
-        return employeeService.updateEmployee(employeeDto);
+    @PostMapping(value = "/update/{id}")
+    public Employee update(@PathVariable("id") Employee employee,
+                           @RequestBody EmployeeDto employeeDto) {
+        return employeeService.updateEmployee(employee, employeeDto);
     }
 
-//    @PostMapping(value = "/update")
-//    public Employee update(EmployeeDto employeeDto) {
-//
-//        return employeeService.updateEmployee(fullName, employeeDto);
-//    }
+    @DeleteMapping(value = "/delete/{id}")
+    public void delete(@PathVariable("id") Employee employee) {
+         employeeService.delete(employee);
+    }
 
 }
 

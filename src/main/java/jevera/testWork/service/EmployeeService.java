@@ -1,6 +1,7 @@
 package jevera.testWork.service;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+
 import jevera.testWork.domain.Dto.EmployeeDto;
 import jevera.testWork.domain.Employee;
 import jevera.testWork.exception.EmployeeAlreadyExist;
@@ -25,17 +26,16 @@ public class EmployeeService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Employee save (Employee employee) {
-        return employeeRepository.save(employee);
+    public Employee save(Employee employee) {
+        return employeeRepository.saveAndFlush(employee);
     }
 
     public Employee register(EmployeeDto employeeDto) {
-        if(isEmployeeExist(employeeDto.getFullName())) {
+        if (isEmployeeExist(employeeDto.getFullName())) {
             throw new EmployeeAlreadyExist(employeeDto.getFullName());
         }
         Employee employee = modelMapper.map(employeeDto, Employee.class);
         employee.setPasswordHash(encryptPassword(employeeDto.getPassword()));
-
         return save(employee);
     }
 
@@ -45,17 +45,16 @@ public class EmployeeService {
                 .orElseThrow(UncorrectGrant::new);
     }
 
-    private boolean checkPassword(String password, Employee employee) {
-        String encryptPassword = encryptPassword(password);
-        return encryptPassword.equals(employee.getPasswordHash());
-    }
-
     public List<Employee> findAll() {
-       return employeeRepository.findAll();
+        return employeeRepository.findAll();
     }
 
     public Employee findByFullName(String fullName) {
-       return employeeRepository.findByFullName(fullName).orElseThrow(EntityNotFound::new);
+        return employeeRepository.findByFullName(fullName).orElseThrow(EntityNotFound::new);
+    }
+
+    public Employee findById(Long id) {
+        return employeeRepository.findById(id).orElseThrow(EntityNotFound::new);
     }
 
     public Employee updateEmployee(Employee employee, EmployeeDto employeeDto) {
@@ -66,22 +65,29 @@ public class EmployeeService {
         return save(employee);
     }
 
-    public void delete (Employee employee) {
+//---------------------------------------------------------
+    public void delete(Employee employee) {
         employeeRepository.delete(employee);
     }
+
     private boolean isEmployeeExist(String employee) {
-        return false;
+       return employeeRepository.findByFullName(employee).isPresent();
+    }
+
+    private boolean checkPassword(String password, Employee employee) {
+        String encryptPassword = encryptPassword(password);
+        return encryptPassword.equals(employee.getPasswordHash());
     }
 
     @SneakyThrows
     private static String encryptPassword(String password) {
-try {
-    MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-    crypt.reset();
-    crypt.update(password.getBytes(UTF_8));
-    return new BigInteger(1, crypt.digest()).toString(16);
-} catch (NoSuchAlgorithmException exception){
-     }
+        try {
+            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+            crypt.reset();
+            crypt.update(password.getBytes(UTF_8));
+            return new BigInteger(1, crypt.digest()).toString(16);
+        } catch (NoSuchAlgorithmException exception) {
+        }
         return null;
     }
 }
