@@ -15,7 +15,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Optional<Team> findByName(String name);
 
-    @Query("select e from employee_team_relation where employee_id = employee.id")
-    List<Team> findByEmployee(@Param("employee") Employee employee);
+    @Query("select t from Team t join t.employeeTeamRelations ert where ert.employee = :employee")
+    List<Team> findAllByEmployee(@Param("employee") Employee employee);
 
 }

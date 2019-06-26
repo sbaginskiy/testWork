@@ -11,9 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class TeamService {
@@ -42,14 +40,6 @@ public class TeamService {
         return save(team);
     }
 
-    public Team addEmployee(Team team, Long employeeId) {
-        EmployeeTeamRelation employeeTeamRelation = new EmployeeTeamRelation().team(team)
-                .employee(employeeService.findById(employeeId));
-
-        team.employeeTeamRelation(employeeTeamRelation);
-        return team;
-    }
-
     public TeamDto addEmployee(Team team, ETPDto etpDto, String nameEmployee) {
         EmployeeTeamRelation employeeTeamRelation = modelMapper.map(etpDto, EmployeeTeamRelation.class);
         Employee employee = employeeService.findByFullName(nameEmployee);
@@ -63,26 +53,30 @@ public class TeamService {
         return modelMapper.map(team, TeamDto.class);
     }
 
-    public TeamDto addEmployees(Team team, ETPDto etpDto, String nameEmployee) {
-        EmployeeTeamRelation employeeTeamRelation = new EmployeeTeamRelation();
-
-        employeeTeamRelation.setSince(etpDto.getSince());
-        employeeTeamRelation.setLoadFactor(etpDto.getLoadFactor());
-        employeeTeamRelation.setTill(etpDto.getTill());
-
-        employeeTeamRelation.setTeam(team);
-
-        Employee employee = employeeService.findByFullName(nameEmployee);
-        employeeTeamRelation.setEmployee(employee);
-
-        Set<EmployeeTeamRelation> set = new HashSet<>();
-        set.add(employeeTeamRelation);
-
-        employee.setEmployeeTeamRelations(set);
-        team.employeeTeamRelation(employeeTeamRelation);
-        teamRepository.save(team);
-        return modelMapper.map(team, TeamDto.class);
+    public List<Team> findByEmployee(Employee employee) {
+        return teamRepository.findAllByEmployee(employee);
     }
+
+//    public TeamDto addEmployees(Team team, ETPDto etpDto, String nameEmployee) {
+//        EmployeeTeamRelation employeeTeamRelation = new EmployeeTeamRelation();
+//
+//        employeeTeamRelation.setSince(etpDto.getSince());
+//        employeeTeamRelation.setLoadFactor(etpDto.getLoadFactor());
+//        employeeTeamRelation.setTill(etpDto.getTill());
+//
+//        employeeTeamRelation.setTeam(team);
+//
+//        Employee employee = employeeService.findByFullName(nameEmployee);
+//        employeeTeamRelation.setEmployee(employee);
+//
+//        Set<EmployeeTeamRelation> set = new HashSet<>();
+//        set.add(employeeTeamRelation);
+//
+//        employee.setEmployeeTeamRelations(set);
+//        team.employeeTeamRelation(employeeTeamRelation);
+//        teamRepository.save(team);
+//        return modelMapper.map(team, TeamDto.class);
+//    }
 
 
     public void delete(String name) {
