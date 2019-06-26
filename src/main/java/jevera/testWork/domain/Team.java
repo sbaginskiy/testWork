@@ -1,15 +1,9 @@
 package jevera.testWork.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-
-import static javax.persistence.CascadeType.*;
 
 
 @Entity
@@ -21,13 +15,19 @@ public class Team implements Serializable {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<EmployeeTeamRelation> employeeTeamRelation;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<EmployeeTeamRelation> employeeTeamRelations;
 
     public Team employeeTeamRelation(EmployeeTeamRelation employeeTeamRelation) {
-        this.employeeTeamRelation.add(employeeTeamRelation);
+        this.employeeTeamRelations.add(employeeTeamRelation);
         return this;
     }
+
+    public Team addEmployees(Set<EmployeeTeamRelation> employeeTeamRelations) {
+        this.employeeTeamRelations.addAll(employeeTeamRelations);
+        return this;
+    }
+
 
     public Long getId() {
         return id;
@@ -45,12 +45,12 @@ public class Team implements Serializable {
         this.name = name;
     }
 
-    public Set<EmployeeTeamRelation> getEmployeeTeamRelation() {
-        return employeeTeamRelation;
+    public Set<EmployeeTeamRelation> getEmployeeTeamRelations() {
+        return employeeTeamRelations;
     }
 
-    public void setEmployeeTeamRelation(Set<EmployeeTeamRelation> employeeTeamRelation) {
-        this.employeeTeamRelation = employeeTeamRelation;
+    public void setEmployeeTeamRelations(Set<EmployeeTeamRelation> employeeTeamRelations) {
+        this.employeeTeamRelations = employeeTeamRelations;
     }
 
     @Override
@@ -60,11 +60,11 @@ public class Team implements Serializable {
         Team team = (Team) o;
         return id.equals(team.id) &&
                 name.equals(team.name) &&
-                Objects.equals(employeeTeamRelation, team.employeeTeamRelation);
+                Objects.equals(employeeTeamRelations, team.employeeTeamRelations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, employeeTeamRelation);
+        return Objects.hash(id, name, employeeTeamRelations);
     }
 }

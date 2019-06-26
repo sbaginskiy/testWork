@@ -2,6 +2,7 @@ package jevera.testWork.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -28,6 +29,11 @@ public class Employee implements Serializable {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private Set<EmployeeTeamRelation> employeeTeamRelations;
+
+    public Employee employeeTeamRelation(EmployeeTeamRelation employeeTeamRelation) {
+        this.employeeTeamRelations.add(employeeTeamRelation);
+        return this;
+    }
 
     public String getFullName() {
         return fullName;

@@ -6,6 +6,7 @@ import jevera.testWork.domain.Team;
 import jevera.testWork.service.TeamService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,15 +41,10 @@ public class TeamController {
         return teamService.update(team, teamDto);
     }
 
-//    @PostMapping("/addEmployee/{id}")
-//    public Team addEmployee(@PathVariable("id") Team team, Long employeeId) {
-//        return teamService.addEmployee(team, employeeId);
-//    }
-    @PutMapping("/addEmployeeV2/{id}")
-    public TeamDto addEmployeeV2(@PathVariable("id") Team team, @RequestBody ETPDto etpDto, String nameEmployee) {
-        return teamService.addEmployeeV2(team, etpDto, nameEmployee);
+    @PutMapping("/addEmployee/{id}")
+    public TeamDto addEmployee(@PathVariable("id") Team team, @RequestBody ETPDto etpDto, String nameEmployee) {
+        return teamService.addEmployee(team, etpDto, nameEmployee);
     }
-
 
     @DeleteMapping("/delete")
     public void delete(String teamName) {

@@ -50,7 +50,20 @@ public class TeamService {
         return team;
     }
 
-    public TeamDto addEmployeeV2(Team team, ETPDto etpDto, String nameEmployee) {
+    public TeamDto addEmployee(Team team, ETPDto etpDto, String nameEmployee) {
+        EmployeeTeamRelation employeeTeamRelation = modelMapper.map(etpDto, EmployeeTeamRelation.class);
+        Employee employee = employeeService.findByFullName(nameEmployee);
+
+        employeeTeamRelation.setTeam(team);
+        employeeTeamRelation.setEmployee(employee);
+
+        employee.employeeTeamRelation(employeeTeamRelation);
+        team.employeeTeamRelation(employeeTeamRelation);
+        teamRepository.save(team);
+        return modelMapper.map(team, TeamDto.class);
+    }
+
+    public TeamDto addEmployees(Team team, ETPDto etpDto, String nameEmployee) {
         EmployeeTeamRelation employeeTeamRelation = new EmployeeTeamRelation();
 
         employeeTeamRelation.setSince(etpDto.getSince());
@@ -66,7 +79,8 @@ public class TeamService {
         set.add(employeeTeamRelation);
 
         employee.setEmployeeTeamRelations(set);
-
+        team.employeeTeamRelation(employeeTeamRelation);
+        teamRepository.save(team);
         return modelMapper.map(team, TeamDto.class);
     }
 
