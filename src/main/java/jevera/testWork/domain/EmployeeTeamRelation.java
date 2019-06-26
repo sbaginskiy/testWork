@@ -19,11 +19,11 @@ public class EmployeeTeamRelation implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
