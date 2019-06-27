@@ -27,7 +27,7 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
-    public Team findByFullName(String name) {
+    public Team findByName(String name) {
         return teamRepository.findByName(name).orElseThrow(EntityNotFound::new);
     }
 
@@ -66,7 +66,7 @@ public class TeamService {
 //
 //        employeeTeamRelation.setTeam(team);
 //
-//        Employee employee = employeeService.findByFullName(nameEmployee);
+//        Employee employee = employeeService.findByName(nameEmployee);
 //        employeeTeamRelation.setEmployee(employee);
 //
 //        Set<EmployeeTeamRelation> set = new HashSet<>();
@@ -80,6 +80,6 @@ public class TeamService {
 
 
     public void delete(String name) {
-        teamRepository.delete(findByFullName(name));
+        teamRepository.delete(findByName(name));
     }
 }

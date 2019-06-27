@@ -1,5 +1,7 @@
 package jevera.testWork.web;
 
+import jevera.testWork.domain.Dto.ProjectDto;
+import jevera.testWork.domain.Dto.TeamDto;
 import jevera.testWork.domain.Project;
 import jevera.testWork.service.ProjectService;
 import org.modelmapper.ModelMapper;
@@ -28,11 +30,14 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public Project create(@RequestBody Project project) {
-        return projectService.save(project);
+    public Project create(@RequestBody ProjectDto projectDto) {
+        return projectService.save(projectDto);
     }
 
-
+    @PutMapping("/{id}")
+    public Project addTeam(@PathVariable("id") Project project, TeamDto teamDto) {
+       return projectService.addTeam(project, teamDto);
+    }
 
     @DeleteMapping("/delete")
     public void delete(Project project) {

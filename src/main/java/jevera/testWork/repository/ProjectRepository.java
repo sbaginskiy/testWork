@@ -19,9 +19,17 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "p.actualWorkStart >= :dateFrom and " +
             "p.actualWorkStart <= :dateTo or " +
             "(p.actualWorkFinish >= :dateFrom and p.actualWorkFinish <= :dateTo)")
-    List<Project> findAllByTeamAndPeriod(@Param("teams") List<Team> teams,
-                                         @Param("dateFrom") Date dateFrom,
-                                         @Param("dateTo") Date dateTo);
+    List<Project> findAllByTeamsAndPeriod(@Param("teams") List<Team> teams,
+                                          @Param("dateFrom") Date dateFrom,
+                                          @Param("dateTo") Date dateTo);
+
+    @Query("select p from Project p where p.team = :team and " +
+            "p.actualWorkStart >= :dateFrom and " +
+            "p.actualWorkStart <= :dateTo or " +
+            "(p.actualWorkFinish >= :dateFrom and p.actualWorkFinish <= :dateTo)")
+    List<Project> findAllByTeamAndPeriod(@Param("team") Team teams,
+                                          @Param("dateFrom") Date dateFrom,
+                                          @Param("dateTo") Date dateTo);
 
     Project findByName(String name);
 }

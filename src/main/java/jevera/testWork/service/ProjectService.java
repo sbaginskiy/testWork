@@ -1,10 +1,13 @@
 package jevera.testWork.service;
 
 import jevera.testWork.domain.Dto.EmployeeDto;
+import jevera.testWork.domain.Dto.ProjectDto;
+import jevera.testWork.domain.Dto.TeamDto;
 import jevera.testWork.domain.Employee;
 import jevera.testWork.domain.Project;
 import jevera.testWork.domain.Team;
 import jevera.testWork.repository.ProjectRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ public class ProjectService {
     private EmployeeService employeeService;
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public List<Project> findByTeam(Team team) {
         return projectRepository.findByTeam(team);
@@ -28,7 +33,12 @@ public class ProjectService {
                                            Date dateTo) {
         Employee employee = employeeService.findByFullName(employeeDto.getFullName());
         List<Team> teams = teamService.findByEmployee(employee);
-        return projectRepository.findAllByTeamAndPeriod(teams, dateFrom, dateTo);
+        return projectRepository.findAllByTeamsAndPeriod(teams, dateFrom, dateTo);
+    }
+
+    public Project addTeam(Project project, TeamDto teamDto) {
+         project.setTeam(teamService.findByName(teamDto.getName()));
+         return project;
     }
 
     public List<Project> findAll() {
@@ -39,8 +49,8 @@ public class ProjectService {
         return projectRepository.findByName(name);
     }
 
-    public Project save(Project project) {
-        return projectRepository.save(project);
+    public Project save(ProjectDto projectDto) {
+        return projectRepository.save(modelMapper.map(projectDto, Project.class));
     }
 
     public void delete(Project project) {

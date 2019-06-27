@@ -6,7 +6,6 @@ import jevera.testWork.domain.Team;
 import jevera.testWork.service.TeamService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class TeamController {
 
     @GetMapping("/findByName")
     public Team findByName(String name) {
-        return teamService.findByFullName(name);
+        return teamService.findByName(name);
     }
 
     @PostMapping("/create")
