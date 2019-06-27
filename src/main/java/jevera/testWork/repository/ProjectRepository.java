@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
+    Project findByName(String name);
+
     List<Project> findByTeam(Team team);
 
     @Query("select p from Project p where p.team in :teams and " +
@@ -31,5 +33,11 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
                                           @Param("dateFrom") Date dateFrom,
                                           @Param("dateTo") Date dateTo);
 
-    Project findByName(String name);
+    @Query("select p from Project p where " +
+            "p.actualWorkStart >= :dateFrom and " +
+            "p.actualWorkStart <= :dateTo or " +
+            "(p.actualWorkFinish >= :dateFrom and " +
+            "p.actualWorkFinish <= :dateTo)")
+    List<Project> findAllByPeriod(@Param("dateFrom") Date dateFrom,
+                                  @Param("dateTo") Date dateTo);
 }

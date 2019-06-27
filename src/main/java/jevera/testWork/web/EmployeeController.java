@@ -4,13 +4,20 @@ import jevera.testWork.domain.Dto.EmployeeDto;
 import jevera.testWork.domain.Employee;
 import jevera.testWork.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("api/employee")
+@RequestMapping("api/employees")
 public class EmployeeController {
 
     @Autowired
@@ -30,7 +37,7 @@ public class EmployeeController {
         return employee;
     }
 
-    @GetMapping(value = "/findAll")
+    @GetMapping(value = "/")
     public List<Employee> findAll() {
         return employeeService.findAll();
     }
@@ -40,13 +47,13 @@ public class EmployeeController {
         return employeeService.findByFullName(fullName);
     }
 
-    @PostMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public Employee update(@PathVariable("id") Employee employee,
                            @RequestBody EmployeeDto employeeDto) {
         return employeeService.updateEmployee(employee, employeeDto);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") Employee employee) {
          employeeService.delete(employee);
     }

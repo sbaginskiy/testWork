@@ -5,9 +5,9 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeamDto {
+public class EmployeeRequestDto {
     private Long id;
-    private String name;
+    private String fullName;
 
     public Long getId() {
         return id;
@@ -17,11 +17,11 @@ public class TeamDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

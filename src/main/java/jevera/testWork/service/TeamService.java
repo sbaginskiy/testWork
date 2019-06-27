@@ -1,5 +1,8 @@
 package jevera.testWork.service;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import jevera.testWork.domain.Dto.ETPDto;
 import jevera.testWork.domain.Dto.TeamDto;
 import jevera.testWork.domain.Employee;
@@ -11,7 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.IntStream;
 
 @Service
 public class TeamService {
@@ -31,6 +38,10 @@ public class TeamService {
         return teamRepository.findByName(name).orElseThrow(EntityNotFound::new);
     }
 
+    public Team findById(Long id) {
+        return teamRepository.findById(id).orElseThrow(EntityNotFound::new);
+    }
+
     public List<Team> findAll() {
         return teamRepository.findAll();
     }
@@ -40,9 +51,9 @@ public class TeamService {
         return save(team);
     }
 
-    public TeamDto addEmployee(Team team, ETPDto etpDto, String nameEmployee) {
+    public TeamDto addEmployee(Team team, ETPDto etpDto) {
         EmployeeTeamRelation employeeTeamRelation = modelMapper.map(etpDto, EmployeeTeamRelation.class);
-        Employee employee = employeeService.findByFullName(nameEmployee);
+        Employee employee = employeeService.findById(etpDto.getEmployee().getId());
 
         employeeTeamRelation.setTeam(team);
         employeeTeamRelation.setEmployee(employee);
@@ -53,33 +64,32 @@ public class TeamService {
         return modelMapper.map(team, TeamDto.class);
     }
 
+    public Team addEmployeeList(Team team, List<ETPDto> etpDtos) {
+
+        List<Long> employeeIds = etpDtos.stream().map(ETPDto::getEmployee).map(Employee::getId).collect(toList());
+
+        Map<Long, ETPDto> employeeIdsAndEtpDtos = IntStream.range(0, (etpDtos.size())).boxed()
+                .collect(toMap(employeeIds::get, etpDtos::get));
+
+        Set<EmployeeTeamRelation> employeeTeamRelations = new HashSet<>();
+
+        for (Long employeeId : employeeIdsAndEtpDtos.keySet()) {
+            Employee employee = employeeService.findById(employeeId);
+            EmployeeTeamRelation employeeTeamRelation =
+                    modelMapper.map(employeeIdsAndEtpDtos.get(employeeId), EmployeeTeamRelation.class)
+                    .employee(employee).team(team);
+            employee.employeeTeamRelation(employeeTeamRelation);
+            employeeTeamRelations.add(employeeTeamRelation);
+        }
+        team.addEmployees(employeeTeamRelations);
+        return save(team);
+    }
+
     public List<Team> findByEmployee(Employee employee) {
         return teamRepository.findAllByEmployee(employee);
     }
 
-//    public TeamDto addEmployees(Team team, ETPDto etpDto, String nameEmployee) {
-//        EmployeeTeamRelation employeeTeamRelation = new EmployeeTeamRelation();
-//
-//        employeeTeamRelation.setSince(etpDto.getSince());
-//        employeeTeamRelation.setLoadFactor(etpDto.getLoadFactor());
-//        employeeTeamRelation.setTill(etpDto.getTill());
-//
-//        employeeTeamRelation.setTeam(team);
-//
-//        Employee employee = employeeService.findByName(nameEmployee);
-//        employeeTeamRelation.setEmployee(employee);
-//
-//        Set<EmployeeTeamRelation> set = new HashSet<>();
-//        set.add(employeeTeamRelation);
-//
-//        employee.setEmployeeTeamRelations(set);
-//        team.employeeTeamRelation(employeeTeamRelation);
-//        teamRepository.save(team);
-//        return modelMapper.map(team, TeamDto.class);
-//    }
-
-
-    public void delete(String name) {
-        teamRepository.delete(findByName(name));
+    public void delete(Long id) {
+        teamRepository.delete(findById(id));
     }
 }

@@ -1,5 +1,6 @@
 package jevera.testWork.domain.Dto;
 
+import jevera.testWork.domain.Employee;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,15 @@ public class ETPDto {
     private Date since;
     private Date till;
     private float loadFactor;
+    private Employee employee;
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public Date getSince() {
         return since;

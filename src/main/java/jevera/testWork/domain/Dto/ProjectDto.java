@@ -6,9 +6,9 @@ import jevera.testWork.domain.Team;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
