@@ -5,7 +5,8 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeRequestDto {
+public class EmployeeResponseDto {
+
     private Long id;
     private String fullName;
     private EmployeeRequestDto employeeRequestDto;

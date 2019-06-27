@@ -19,10 +19,28 @@ public class ProjectDto {
     private Employee productOwner;
     private Employee accountManager;
     private Team team;
+    private Date actualWorkStart;
+    private Date actualWorkFinish;
     private Date plannedWorkStart;
     private Date plannedWorkFinish;
     @Enumerated(EnumType.STRING)
     private ProjectStatus projectStatus;
+
+    public Date getActualWorkStart() {
+        return actualWorkStart;
+    }
+
+    public void setActualWorkStart(Date actualWorkStart) {
+        this.actualWorkStart = actualWorkStart;
+    }
+
+    public Date getActualWorkFinish() {
+        return actualWorkFinish;
+    }
+
+    public void setActualWorkFinish(Date actualWorkFinish) {
+        this.actualWorkFinish = actualWorkFinish;
+    }
 
     public String getName() {
         return name;

@@ -11,14 +11,14 @@ public class ETPDto {
     private Date since;
     private Date till;
     private float loadFactor;
-    private Employee employee;
+    private EmployeeRequestDto employeeRequestDto;
 
-    public Employee getEmployee() {
-        return employee;
+    public EmployeeRequestDto getEmployeeRequestDto() {
+        return employeeRequestDto;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeRequestDto(EmployeeRequestDto employeeRequestDto) {
+        this.employeeRequestDto = employeeRequestDto;
     }
 
     public Date getSince() {

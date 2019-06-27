@@ -3,7 +3,6 @@ package jevera.testWork.service;
 import jevera.testWork.domain.Dto.EmployeeRequestDto;
 import jevera.testWork.domain.Dto.ProjectDto;
 import jevera.testWork.domain.Dto.TeamDto;
-import jevera.testWork.domain.Employee;
 import jevera.testWork.domain.Project;
 import jevera.testWork.domain.Team;
 import jevera.testWork.exception.EntityNotFound;
@@ -36,8 +35,7 @@ public class ProjectService {
 
     public List<Project> findAllByEmployeeAndPeriod(EmployeeRequestDto employeeDto, Date dateFrom,
                                                     Date dateTo) {
-        Employee employee = employeeService.findByFullName(employeeDto.getFullName());
-        List<Team> teams = teamService.findByEmployee(employee);
+        List<Team> teams = teamService.findByEmployee(employeeDto);
         return projectRepository.findAllByTeamsAndPeriod(teams, dateFrom, dateTo);
     }
 
@@ -65,10 +63,13 @@ public class ProjectService {
     public Project save(ProjectDto projectDto) {
         return projectRepository.save(modelMapper.map(projectDto, Project.class));
     }
+    public Project save(Project project) {
+        return projectRepository.save(project);
+    }
 
     public Project update(Project project, ProjectDto projectDto) {
         modelMapper.map(projectDto, project);
-        return project;
+        return save(project);
     }
 
     public void delete(Long id) {

@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 import jevera.testWork.domain.Dto.ETPDto;
+import jevera.testWork.domain.Dto.EmployeeRequestDto;
 import jevera.testWork.domain.Dto.TeamDto;
 import jevera.testWork.domain.Employee;
 import jevera.testWork.domain.EmployeeTeamRelation;
@@ -42,8 +43,9 @@ public class TeamService {
         return teamRepository.findById(id).orElseThrow(EntityNotFound::new);
     }
 
-    public List<Team> findAll() {
-        return teamRepository.findAll();
+    public List<TeamDto> findAll() {
+        return teamRepository.findAll().stream()
+                .map(it -> modelMapper.map(it, TeamDto.class)).collect(toList());
     }
 
     public Team update(Team team, TeamDto teamDto) {
@@ -53,7 +55,7 @@ public class TeamService {
 
     public TeamDto addEmployee(Team team, ETPDto etpDto) {
         EmployeeTeamRelation employeeTeamRelation = modelMapper.map(etpDto, EmployeeTeamRelation.class);
-        Employee employee = employeeService.findById(etpDto.getEmployee().getId());
+        Employee employee = employeeService.findById(etpDto.getEmployeeRequestDto().getId());
 
         employeeTeamRelation.setTeam(team);
         employeeTeamRelation.setEmployee(employee);
@@ -66,7 +68,9 @@ public class TeamService {
 
     public Team addEmployeeList(Team team, List<ETPDto> etpDtos) {
 
-        List<Long> employeeIds = etpDtos.stream().map(ETPDto::getEmployee).map(Employee::getId).collect(toList());
+        List<Long> employeeIds = etpDtos.stream().map(ETPDto::getEmployeeRequestDto)
+                .map(EmployeeRequestDto::getId)
+                .collect(toList());
 
         Map<Long, ETPDto> employeeIdsAndEtpDtos = IntStream.range(0, (etpDtos.size())).boxed()
                 .collect(toMap(employeeIds::get, etpDtos::get));
@@ -85,7 +89,8 @@ public class TeamService {
         return save(team);
     }
 
-    public List<Team> findByEmployee(Employee employee) {
+    public List<Team> findByEmployee(EmployeeRequestDto requestDto) {
+        Employee employee = employeeService.findById(requestDto.getId());
         return teamRepository.findAllByEmployee(employee);
     }
 

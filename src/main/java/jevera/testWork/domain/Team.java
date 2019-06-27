@@ -1,5 +1,7 @@
 package jevera.testWork.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -22,6 +24,7 @@ public class Team implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<EmployeeTeamRelation> employeeTeamRelations;
 
     public Team employeeTeamRelation(EmployeeTeamRelation employeeTeamRelation) {

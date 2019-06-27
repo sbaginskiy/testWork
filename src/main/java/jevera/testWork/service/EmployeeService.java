@@ -3,6 +3,7 @@ package jevera.testWork.service;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import jevera.testWork.domain.Dto.EmployeeDto;
+import jevera.testWork.domain.Dto.EmployeeRequestDto;
 import jevera.testWork.domain.Employee;
 import jevera.testWork.exception.EmployeeAlreadyExist;
 import jevera.testWork.exception.EntityNotFound;
@@ -63,6 +64,10 @@ public class EmployeeService {
             employee.setPasswordHash(encryptPassword(employeeDto.getPassword()));
         }
         return save(employee);
+    }
+
+    public List<Employee> findAllByTeam (Long teamId) {
+       return employeeRepository.findAllByTeam(teamId);
     }
 
 //---------------------------------------------------------

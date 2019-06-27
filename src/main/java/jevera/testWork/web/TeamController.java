@@ -1,6 +1,7 @@
 package jevera.testWork.web;
 
 import jevera.testWork.domain.Dto.ETPDto;
+import jevera.testWork.domain.Dto.EmployeeRequestDto;
 import jevera.testWork.domain.Dto.TeamDto;
 import jevera.testWork.domain.Team;
 import jevera.testWork.service.TeamService;
@@ -33,15 +34,19 @@ public class TeamController {
     }
 
     @GetMapping("/")
-    public List<Team> getAll() {
+    public List<TeamDto> getAll() {
         return teamService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Team findOneById(@PathVariable Long id) {
+    public Team getOneById(@PathVariable Long id) {
         return teamService.findById(id);
     }
 
+    @GetMapping("/getByEmployee")
+    public List<Team> getByEmployee(EmployeeRequestDto requestDto) {
+        return teamService.findByEmployee(requestDto);
+    }
     @PutMapping("/{id}")
     public Team update(@PathVariable("id") Team team, @RequestBody TeamDto teamDto) {
         return teamService.update(team, teamDto);
