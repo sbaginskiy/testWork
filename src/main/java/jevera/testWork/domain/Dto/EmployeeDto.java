@@ -6,20 +6,29 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDto {
+    @NotNull
     private String fullName;
-    @JsonIgnore
+    @Size(min = 7)
+    @NotNull
     private String password;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private Date dateOfBirth;
+    @NotNull
     private String sex;
     private String nationality;
+    @NotNull
     private String workLocation;
+    @NotNull
     private String currentPosition;
+    @NotNull
     private String startYearOfProfExp;
 
     public String getFullName() {

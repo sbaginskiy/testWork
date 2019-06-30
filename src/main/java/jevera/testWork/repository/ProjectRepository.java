@@ -15,7 +15,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     Project findByName(String name);
 
-    List<Project> findByTeam(Team team);
+    @Query("select p from Project p where p.team.id = :id")
+    List<Project> findByTeam(@Param("id") Long id);
 
     @Query("select p from Project p where p.team in :teams and " +
             "p.actualWorkStart >= :dateFrom and " +

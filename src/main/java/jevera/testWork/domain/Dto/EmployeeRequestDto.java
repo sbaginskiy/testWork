@@ -8,15 +8,6 @@ import lombok.NoArgsConstructor;
 public class EmployeeRequestDto {
     private Long id;
     private String fullName;
-    private EmployeeRequestDto employeeRequestDto;
-
-    public EmployeeRequestDto getEmployeeRequestDto() {
-        return employeeRequestDto;
-    }
-
-    public void setEmployeeRequestDto(EmployeeRequestDto employeeRequestDto) {
-        this.employeeRequestDto = employeeRequestDto;
-    }
 
     public Long getId() {
         return id;

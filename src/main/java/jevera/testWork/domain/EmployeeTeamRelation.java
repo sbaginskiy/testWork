@@ -1,5 +1,8 @@
 package jevera.testWork.domain;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -24,11 +27,11 @@ public class EmployeeTeamRelation implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {PERSIST, MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {PERSIST, MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 

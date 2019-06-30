@@ -3,7 +3,7 @@ package jevera.testWork.service;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-import jevera.testWork.domain.Dto.ETPDto;
+import jevera.testWork.domain.Dto.ETRDto;
 import jevera.testWork.domain.Dto.EmployeeRequestDto;
 import jevera.testWork.domain.Dto.TeamDto;
 import jevera.testWork.domain.Employee;
@@ -13,6 +13,8 @@ import jevera.testWork.exception.EntityNotFound;
 import jevera.testWork.repository.TeamRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -43,9 +45,8 @@ public class TeamService {
         return teamRepository.findById(id).orElseThrow(EntityNotFound::new);
     }
 
-    public List<TeamDto> findAll() {
-        return teamRepository.findAll().stream()
-                .map(it -> modelMapper.map(it, TeamDto.class)).collect(toList());
+    public Page<Team> findAll(Pageable pageable) {
+        return teamRepository.findAll(pageable);
     }
 
     public Team update(Team team, TeamDto teamDto) {
@@ -53,7 +54,7 @@ public class TeamService {
         return save(team);
     }
 
-    public TeamDto addEmployee(Team team, ETPDto etpDto) {
+    public Team addEmployee(Team team, ETRDto etpDto) {
         EmployeeTeamRelation employeeTeamRelation = modelMapper.map(etpDto, EmployeeTeamRelation.class);
         Employee employee = employeeService.findById(etpDto.getEmployeeRequestDto().getId());
 
@@ -62,21 +63,18 @@ public class TeamService {
 
         employee.employeeTeamRelation(employeeTeamRelation);
         team.employeeTeamRelation(employeeTeamRelation);
-        teamRepository.save(team);
-        return modelMapper.map(team, TeamDto.class);
+        return save(team);
     }
 
-    public Team addEmployeeList(Team team, List<ETPDto> etpDtos) {
-
-        List<Long> employeeIds = etpDtos.stream().map(ETPDto::getEmployeeRequestDto)
+    public Team addEmployeeList(Team team, List<ETRDto> etpDtos) {
+        List<Long> employeeIds = etpDtos.stream().map(ETRDto::getEmployeeRequestDto)
                 .map(EmployeeRequestDto::getId)
                 .collect(toList());
 
-        Map<Long, ETPDto> employeeIdsAndEtpDtos = IntStream.range(0, (etpDtos.size())).boxed()
+        Map<Long, ETRDto> employeeIdsAndEtpDtos = IntStream.range(0, (etpDtos.size())).boxed()
                 .collect(toMap(employeeIds::get, etpDtos::get));
 
         Set<EmployeeTeamRelation> employeeTeamRelations = new HashSet<>();
-
         for (Long employeeId : employeeIdsAndEtpDtos.keySet()) {
             Employee employee = employeeService.findById(employeeId);
             EmployeeTeamRelation employeeTeamRelation =
@@ -89,8 +87,8 @@ public class TeamService {
         return save(team);
     }
 
-    public List<Team> findByEmployee(EmployeeRequestDto requestDto) {
-        Employee employee = employeeService.findById(requestDto.getId());
+    public List<Team> findByEmployee(Long id) {
+        Employee employee = employeeService.findById(id);
         return teamRepository.findAllByEmployee(employee);
     }
 

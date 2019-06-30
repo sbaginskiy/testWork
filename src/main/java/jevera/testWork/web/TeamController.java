@@ -1,12 +1,15 @@
 package jevera.testWork.web;
 
-import jevera.testWork.domain.Dto.ETPDto;
-import jevera.testWork.domain.Dto.EmployeeRequestDto;
+import jevera.testWork.domain.Dto.ETRDto;
 import jevera.testWork.domain.Dto.TeamDto;
 import jevera.testWork.domain.Team;
 import jevera.testWork.service.TeamService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/teams")
+@RequestMapping("/api")
 public class TeamController {
 
     @Autowired
@@ -27,43 +31,51 @@ public class TeamController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @PostMapping("/")
-    public Team create(@RequestBody TeamDto teamDto) {
-        Team team = modelMapper.map(teamDto, Team.class);
-        return teamService.save(team);
+    @PostMapping("/teams")
+    public ResponseEntity<Team> create(@RequestBody Team team) {
+        Team result = teamService.save(team);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/")
-    public List<TeamDto> getAll() {
-        return teamService.findAll();
+    @GetMapping(value = "/teams", params = {"page", "size"})
+    public ResponseEntity<List<Team>> getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+        Page<Team> results = teamService.findAll(PageRequest.of(page, size));
+        return new ResponseEntity<>(results.getContent(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public Team getOneById(@PathVariable Long id) {
-        return teamService.findById(id);
+    @GetMapping("/teams/{id}")
+    public ResponseEntity<Team> getOneById(@PathVariable Long id) {
+        Team result = teamService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/getByEmployee")
-    public List<Team> getByEmployee(EmployeeRequestDto requestDto) {
-        return teamService.findByEmployee(requestDto);
-    }
-    @PutMapping("/{id}")
-    public Team update(@PathVariable("id") Team team, @RequestBody TeamDto teamDto) {
-        return teamService.update(team, teamDto);
+    @GetMapping("/teams-by-employee")
+    public ResponseEntity<List<Team>> getByEmployee(Long id) {
+        List<Team> result = teamService.findByEmployee(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/addEmployee")
-    public TeamDto addEmployee(@PathVariable("id") Team team, @RequestBody ETPDto etpDto) {
-        return teamService.addEmployee(team, etpDto);
+    @PutMapping("/teams/{id}")
+    public ResponseEntity<Team> update(@PathVariable("id") Team team, @RequestBody TeamDto teamDto) {
+        Team result = teamService.update(team, teamDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/addEmployeeList")
-    public Team addEmployeeList(@PathVariable("id") Team team, @RequestBody List<ETPDto> etpDtoList) {
-        return teamService.addEmployeeList(team, etpDtoList);
+    @PutMapping("/teams/{id}/add-employee")
+    public ResponseEntity<Team> addEmployee(@PathVariable("id") Team team, @RequestBody ETRDto etpDto) {
+        Team result = teamService.addEmployee(team, etpDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    @PutMapping("/teams/{id}/add-employeeList")
+    public ResponseEntity<Team> addEmployeeList(@PathVariable("id") Team team, @RequestBody List<ETRDto> etpDtoList) {
+        Team result = teamService.addEmployeeList(team, etpDtoList);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/teams/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         teamService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

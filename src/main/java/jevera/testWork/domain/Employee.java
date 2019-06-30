@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Employee implements Serializable {
@@ -19,13 +21,19 @@ public class Employee implements Serializable {
     @Column(name = "employee_id", insertable = false, updatable = false)
     private Long id;
     @Column(unique = true)
+    @Size(min = 5, max = 25)
     private String fullName;
     private String passwordHash;
+    @NotNull
     private Date dateOfBirth;
+    @NotNull
     private String sex;
     private String nationality;
+    @NotNull
     private String workLocation;
+    @NotNull
     private String currentPosition;
+    @NotNull
     private String startYearOfProfExp;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)

@@ -9,20 +9,26 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectDto {
     private String name;
+    @NotNull
     private String description;
     private String client;
+    @NotNull
     private Employee productOwner;
+    @NotNull
     private Employee accountManager;
+    @NotNull
     private Team team;
     private Date actualWorkStart;
     private Date actualWorkFinish;
     private Date plannedWorkStart;
     private Date plannedWorkFinish;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ProjectStatus projectStatus;
 

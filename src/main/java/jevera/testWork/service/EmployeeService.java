@@ -3,7 +3,6 @@ package jevera.testWork.service;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import jevera.testWork.domain.Dto.EmployeeDto;
-import jevera.testWork.domain.Dto.EmployeeRequestDto;
 import jevera.testWork.domain.Employee;
 import jevera.testWork.exception.EmployeeAlreadyExist;
 import jevera.testWork.exception.EntityNotFound;
@@ -13,12 +12,15 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 @Service
 public class EmployeeService {
@@ -26,6 +28,10 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private TeamService teamService;
+    @Autowired
+    private EntityManager entityManager;
 
     public Employee save(Employee employee) {
         return employeeRepository.saveAndFlush(employee);
@@ -46,8 +52,8 @@ public class EmployeeService {
                 .orElseThrow(UncorrectGrant::new);
     }
 
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public Page<Employee> findAll(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
     }
 
     public Employee findByFullName(String fullName) {
@@ -55,7 +61,7 @@ public class EmployeeService {
     }
 
     public Employee findById(Long id) {
-        return employeeRepository.findById(id).orElseThrow(EntityNotFound::new);
+        return employeeRepository.getOne(id);
     }
 
     public Employee updateEmployee(Employee employee, EmployeeDto employeeDto) {
@@ -67,13 +73,14 @@ public class EmployeeService {
     }
 
     public List<Employee> findAllByTeam (Long teamId) {
-       return employeeRepository.findAllByTeam(teamId);
+       return employeeRepository.findAllByTeam(teamService.findById(teamId));
     }
 
-//---------------------------------------------------------
     public void delete(Employee employee) {
         employeeRepository.delete(employee);
     }
+
+    //---------------------------------------------------------
 
     private boolean isEmployeeExist(String employee) {
        return employeeRepository.findByFullName(employee).isPresent();

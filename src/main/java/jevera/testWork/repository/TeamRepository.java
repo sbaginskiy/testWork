@@ -1,6 +1,7 @@
 package jevera.testWork.repository;
 
 import jevera.testWork.domain.Employee;
+import jevera.testWork.domain.EmployeeTeamRelation;
 import jevera.testWork.domain.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,6 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Optional<Team> findByName(String name);
 
-    @Query("select t from Team t join t.employeeTeamRelations ert where ert.employee = :employee")
+    @Query("select team from EmployeeTeamRelation etr where etr.employee = :employee")
     List<Team> findAllByEmployee(@Param("employee") Employee employee);
-
 }

@@ -1,14 +1,16 @@
 package jevera.testWork.service;
 
-import jevera.testWork.domain.Dto.EmployeeRequestDto;
 import jevera.testWork.domain.Dto.ProjectDto;
 import jevera.testWork.domain.Dto.TeamDto;
+import jevera.testWork.domain.Employee;
 import jevera.testWork.domain.Project;
 import jevera.testWork.domain.Team;
 import jevera.testWork.exception.EntityNotFound;
 import jevera.testWork.repository.ProjectRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,17 +27,17 @@ public class ProjectService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<Project> findByTeam(Team team) {
-        return projectRepository.findByTeam(team);
+    public List<Project> findByTeamId(Long id) {
+        return projectRepository.findByTeam(id);
     }
 
     public Project findById(Long id) {
         return projectRepository.findById(id).orElseThrow(EntityNotFound::new);
     }
 
-    public List<Project> findAllByEmployeeAndPeriod(EmployeeRequestDto employeeDto, Date dateFrom,
+    public List<Project> findAllByEmployeeAndPeriod(Long id, Date dateFrom,
                                                     Date dateTo) {
-        List<Team> teams = teamService.findByEmployee(employeeDto);
+        List<Team> teams = teamService.findByEmployee(id);
         return projectRepository.findAllByTeamsAndPeriod(teams, dateFrom, dateTo);
     }
 
@@ -52,8 +54,8 @@ public class ProjectService {
          return project;
     }
 
-    public List<Project> findAll() {
-        return projectRepository.findAll();
+    public Page<Project> findAll(Pageable pageable) {
+        return projectRepository.findAll(pageable);
     }
 
     public Project findByName(String name) {
@@ -61,7 +63,14 @@ public class ProjectService {
     }
 
     public Project save(ProjectDto projectDto) {
-        return projectRepository.save(modelMapper.map(projectDto, Project.class));
+        Employee accountManager = employeeService.findById(projectDto.getAccountManager().getId());
+        Employee productOwner = employeeService.findById(projectDto.getProductOwner().getId());
+        Team team = teamService.findById(projectDto.getTeam().getId());
+        Project project = modelMapper.map(projectDto, Project.class);
+        project.setAccountManager(accountManager);
+        project.setProductOwner(productOwner);
+        project.setTeam(team);
+        return projectRepository.save(project);
     }
     public Project save(Project project) {
         return projectRepository.save(project);
@@ -71,7 +80,6 @@ public class ProjectService {
         modelMapper.map(projectDto, project);
         return save(project);
     }
-
     public void delete(Long id) {
         projectRepository.delete(findById(id));
     }

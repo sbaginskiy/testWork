@@ -3,6 +3,7 @@ package jevera.testWork.domain;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode
 @Entity
@@ -17,20 +19,26 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
+    @NotNull
     private String description;
     private String client;
     @ManyToOne
+    @NotNull
     private Employee productOwner;
     @ManyToOne
+    @NotNull
     private Employee accountManager;
     @ManyToOne
+    @NotNull
     private Team team;
     private Date plannedWorkStart;
     private Date plannedWorkFinish;
     private Date actualWorkStart;
     private Date actualWorkFinish;
     @Enumerated(EnumType.STRING)
+    @NotNull
     private ProjectStatus projectStatus;
 
     public String getName() {

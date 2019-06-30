@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
-public class ETPDto {
+public class ETRDto {
     private Date since;
     private Date till;
     private float loadFactor;
