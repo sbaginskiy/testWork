@@ -5,6 +5,7 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
+apply plugin: 'java-library-distribution'
 
 group = 'jevera'
 version = '0.0.1-SNAPSHOT'
@@ -20,7 +21,21 @@ repositories {
 	mavenCentral()
 }
 
+
+distZip.shouldRunAfter(build)
+
+jar {
+	// Keep jar clean:
+	exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+
+	manifest {
+		attributes 'Main-Class': 'jevera.testWork.MainClassApplication'
+	}
+}
+
 dependencies {
+	compile 'org.apache.commons:commons-lang3:3.3.2'
+	
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

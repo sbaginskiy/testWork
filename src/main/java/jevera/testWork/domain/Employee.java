@@ -1,5 +1,7 @@
 package jevera.testWork.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -34,9 +36,10 @@ public class Employee implements Serializable {
     @NotNull
     private String currentPosition;
     @NotNull
-    private String startYearOfProfExp;
+    private Date startYearOfProfExp;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<EmployeeTeamRelation> employeeTeamRelations;
 
     public Employee employeeTeamRelation(EmployeeTeamRelation employeeTeamRelation) {
@@ -108,11 +111,11 @@ public class Employee implements Serializable {
         this.currentPosition = currentPosition;
     }
 
-    public String getStartYearOfProfExp() {
+    public Date getStartYearOfProfExp() {
         return startYearOfProfExp;
     }
 
-    public void setStartYearOfProfExp(String startYearOfProfExp) {
+    public void setStartYearOfProfExp(Date startYearOfProfExp) {
         this.startYearOfProfExp = startYearOfProfExp;
     }
 
@@ -152,7 +155,7 @@ public class Employee implements Serializable {
         this.currentPosition = currentPosition;
         return this;
     }
-    public Employee startYearOfProfExp(String startYearOfProfExp) {
+    public Employee startYearOfProfExp(Date startYearOfProfExp) {
         this.startYearOfProfExp = startYearOfProfExp;
         return this;
     }

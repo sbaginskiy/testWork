@@ -3,12 +3,15 @@ package jevera.testWork.domain.Dto;
 import jevera.testWork.domain.Employee;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ETRDto {
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date since;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date till;
     private float loadFactor;
     private EmployeeRequestDto employeeRequestDto;

@@ -1,6 +1,5 @@
 package jevera.testWork.domain.Dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,7 +28,8 @@ public class EmployeeDto {
     @NotNull
     private String currentPosition;
     @NotNull
-    private String startYearOfProfExp;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startYearOfProfExp;
 
     public String getFullName() {
         return fullName;
@@ -87,11 +87,11 @@ public class EmployeeDto {
         this.currentPosition = currentPosition;
     }
 
-    public String getStartYearOfProfExp() {
+    public Date getStartYearOfProfExp() {
         return startYearOfProfExp;
     }
 
-    public void setStartYearOfProfExp(String startYearOfProfExp) {
+    public void setStartYearOfProfExp(Date startYearOfProfExp) {
         this.startYearOfProfExp = startYearOfProfExp;
     }
 }

@@ -22,7 +22,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class EmployeeController {
 
     @Autowired
@@ -43,26 +43,26 @@ public class EmployeeController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/employees", params = {"page", "size"})
+    @GetMapping(value = "/api/employees", params = {"page", "size"})
     public ResponseEntity<List<Employee>> findAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Page<Employee> employees = employeeService.findAll(PageRequest.of(page, size));
         return new ResponseEntity<>(employees.getContent(), HttpStatus.OK);
     }
 
-    @GetMapping("/employees-by-team-id")
+    @GetMapping("/api/employees-by-team-id")
     public ResponseEntity<List<Employee>> getAllByTeam(Long teamId) {
         List<Employee> result = employeeService.findAllByTeam(teamId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/api/employees/{id}")
     public ResponseEntity<Employee> update(@PathVariable("id") Employee employee,
                                            @RequestBody EmployeeDto employeeDto) {
         Employee result = employeeService.updateEmployee(employee, employeeDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @DeleteMapping("/employees/{id}")
+    @DeleteMapping("/api/employees/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Employee employee) {
         employeeService.delete(employee);
         return ResponseEntity.ok().build();

@@ -5,6 +5,7 @@ import jevera.testWork.domain.ProjectStatus;
 import jevera.testWork.domain.Team;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import javax.persistence.EnumType;
@@ -24,9 +25,13 @@ public class ProjectDto {
     private Employee accountManager;
     @NotNull
     private Team team;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date actualWorkStart;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date actualWorkFinish;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date plannedWorkStart;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date plannedWorkFinish;
     @NotNull
     @Enumerated(EnumType.STRING)

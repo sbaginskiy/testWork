@@ -1,5 +1,6 @@
 package jevera.testWork.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
@@ -26,9 +27,11 @@ public class Project {
     private String client;
     @ManyToOne
     @NotNull
+    @JsonIgnore
     private Employee productOwner;
     @ManyToOne
     @NotNull
+    @JsonIgnore
     private Employee accountManager;
     @ManyToOne
     @NotNull
