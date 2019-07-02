@@ -2,6 +2,7 @@ package jevera.testWork.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode
 @Entity
+@ToString
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package jevera.testWork.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import javax.persistence.OneToMany;
 
 
 @Entity
+@ToString
 public class Team implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

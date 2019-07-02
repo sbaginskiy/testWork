@@ -5,6 +5,7 @@ import static javax.persistence.CascadeType.PERSIST;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,6 +22,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class EmployeeTeamRelation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
