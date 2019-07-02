@@ -14,13 +14,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 @Service
 public class EmployeeService {
@@ -32,6 +36,8 @@ public class EmployeeService {
     private TeamService teamService;
     @Autowired
     private EntityManager entityManager;
+
+    private static final Logger LOGGER = Logger.getLogger( Employee.class.getName() );
 
     public Employee save(Employee employee) {
         return employeeRepository.saveAndFlush(employee);
@@ -75,8 +81,19 @@ public class EmployeeService {
     public List<Employee> findAllByTeam (Long teamId) {
        return employeeRepository.findAllByTeam(teamService.findById(teamId));
     }
-
+    @Transactional
+    @Modifying
     public void delete(Employee employee) {
+        try {
+            Query query = entityManager.createQuery(
+                    "delete " +
+                            "from EmployeeTeamRelation e " +
+                            "where e.employee = :employee");
+            query.setParameter("employee", employee);
+            query.executeUpdate();
+        } finally {
+            entityManager.close();
+        }
         employeeRepository.delete(employee);
     }
 
