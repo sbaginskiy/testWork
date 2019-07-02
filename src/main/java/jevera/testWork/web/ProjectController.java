@@ -93,6 +93,12 @@ public class ProjectController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PutMapping("/projects/{id}/remove-team")
+    public ResponseEntity<Project> removeTeam(@PathVariable("id") Project project) {
+        Project result = projectService.removeTeam(project);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @DeleteMapping("/projects/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         projectService.delete(id);

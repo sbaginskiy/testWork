@@ -80,6 +80,12 @@ public class ProjectService {
         modelMapper.map(projectDto, project);
         return save(project);
     }
+
+    public Project removeTeam(Project project) {
+        project.setTeam(null);
+        return project;
+    }
+
     public void delete(Long id) {
         projectRepository.delete(findById(id));
     }
