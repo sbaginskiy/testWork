@@ -11,19 +11,26 @@ import jevera.testWork.domain.EmployeeTeamRelation;
 import jevera.testWork.domain.Team;
 import jevera.testWork.exception.EntityNotFound;
 import jevera.testWork.repository.TeamRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 @Service
+@Slf4j
 public class TeamService {
 
     @Autowired
@@ -32,6 +39,12 @@ public class TeamService {
     private EmployeeService employeeService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ProjectService projectService;
+    @Autowired
+    private EntityManager entityManager;
+
+
 
     public Team save(Team team) {
         return teamRepository.save(team);
@@ -92,7 +105,21 @@ public class TeamService {
         return teamRepository.findAllByEmployee(employee);
     }
 
+    @Transactional
+    @Modifying
     public void delete(Long id) {
-        teamRepository.delete(findById(id));
+        try {
+            Query query = entityManager.createQuery(
+                    "delete " +
+                            "from EmployeeTeamRelation e " +
+                            "where e.team.id = :teamId");
+            query.setParameter("teamId", id);
+            query.executeUpdate();
+        } finally {
+            entityManager.close();
+        }
+
+        log.info("project list {}", projectService.findByTeamId(id).stream().map(it -> it.team(null)).map(it -> projectService.save(it)).collect(toList()));
+        teamRepository.deleteById(id);
     }
 }
