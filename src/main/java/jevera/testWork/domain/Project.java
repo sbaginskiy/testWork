@@ -34,7 +34,8 @@ public class Project {
     @JsonIgnore
     private Employee accountManager;
     @ManyToOne
-    @NotNull
+//TODO  ----  @NotNull  -----
+//misunderstandings in business logic, so far I decided to comment out
     private Team team;
     private Date plannedWorkStart;
     private Date plannedWorkFinish;
@@ -86,6 +87,11 @@ public class Project {
 
     public Team getTeam() {
         return team;
+    }
+
+    public Project team(Team team) {
+        this.setTeam(team);
+        return this;
     }
 
     public void setTeam(Team team) {
