@@ -44,9 +44,15 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/api/employees", params = {"page", "size"})
-    public ResponseEntity<List<Employee>> findAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<List<Employee>> findAllPage(@RequestParam("page") int page, @RequestParam("size") int size) {
         Page<Employee> employees = employeeService.findAll(PageRequest.of(page, size));
         return new ResponseEntity<>(employees.getContent(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/api/employees-all")
+    public ResponseEntity<List<Employee>> findAll() {
+        List<Employee> employees = employeeService.findAll();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @GetMapping("/api/employees-by-team-id")

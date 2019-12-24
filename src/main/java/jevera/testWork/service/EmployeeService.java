@@ -62,6 +62,12 @@ public class EmployeeService {
         return employeeRepository.findAll(pageable);
     }
 
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
+
+
+
     public Employee findByFullName(String fullName) {
         return employeeRepository.findByFullName(fullName).orElseThrow(EntityNotFound::new);
     }
