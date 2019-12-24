@@ -162,6 +162,24 @@ public class Employee implements Serializable {
         return this;
     }
 
+    public Employee(Long id, @Size(min = 5, max = 25) String fullName, String passwordHash, @NotNull Date dateOfBirth,
+                    @NotNull String sex, String nationality, @NotNull String workLocation, @NotNull String currentPosition,
+                    @NotNull Date startYearOfProfExp) {
+        this.id = id;
+        this.fullName = fullName;
+        this.passwordHash = passwordHash;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.nationality = nationality;
+        this.workLocation = workLocation;
+        this.currentPosition = currentPosition;
+        this.startYearOfProfExp = startYearOfProfExp;
+    }
+
+    public Employee(){
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

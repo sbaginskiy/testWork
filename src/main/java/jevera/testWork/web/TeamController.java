@@ -67,7 +67,7 @@ public class TeamController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/teams/{id}/add-employeeList")
+    @PutMapping("/teams/{id}/add-employee-list")
     public ResponseEntity<Team> addEmployeeList(@PathVariable("id") Team team, @RequestBody List<ETRDto> etpDtoList) {
         Team result = teamService.addEmployeeList(team, etpDtoList);
         return new ResponseEntity<>(result, HttpStatus.OK);

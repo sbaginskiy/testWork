@@ -53,7 +53,7 @@ public class ProjectController {
     }
 
     @GetMapping("/projects-by-team-id")
-    public ResponseEntity<List<Project>> getProjectByTeam(Long teamId) {
+    public ResponseEntity<List<Project>> getProjectByTeam(Long teamId) {   // assert
         List<Project> projects = projectService.findByTeamId(teamId);
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
